@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Створюємо інстанс axios з базовою URL-адресою сервера
 const api = axios.create({
-  baseURL: 'http://localhost:5001', // URL сервера
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
