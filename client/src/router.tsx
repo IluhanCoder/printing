@@ -1,0 +1,26 @@
+import { Route, Routes } from "react-router";
+import LoginPage from "./auth/login-page";
+import RegistrationPage from "./auth/registration-page";
+import CreateSpecialistPage from "./user/create-specialist-page";
+import NewDataPage from "./data/new-data-page";
+import TechnologiesPage from "./data/technologies-page";
+import NewServicePage from "./service/new-service-page";
+import ServiceDetailsWrapper from "./service/service-details-wrapper";
+import ServicesListPage from "./service/services-list-page";
+import OrderPage from "./order/order-page";
+import OrderDetailsPage from "./order/order-details-page";
+
+export default function Router() {
+    return <Routes>
+        <Route path="/registration" element={<RegistrationPage/>}/>
+        <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/create-specialist" element={<CreateSpecialistPage/>}/>
+        <Route path="/create-data" element={<NewDataPage/>}/>
+        <Route path="/technologies" element={<TechnologiesPage/>}/>
+        <Route path="/create-service" element={<NewServicePage/>}/>
+        <Route path="/service/:id" element={<ServiceDetailsWrapper/>} />
+        <Route path="/services-list" element={<ServicesListPage/>}/>
+        <Route path="/order/:serviceId" element={<OrderPage/>}/>
+        <Route path="/order-details/:orderId" element={<OrderDetailsPage/>}/>
+    </Routes>
+}
