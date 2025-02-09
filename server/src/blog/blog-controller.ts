@@ -44,7 +44,7 @@ export default new class BlogController {
 
     async fetchBlogs(req: Request, res: Response) {
         try {
-            const blogs = blogService.fetchBlogs();
+            const blogs = await blogService.fetchBlogs();
             res.status(200).json({blogs});
         } catch (error) {
             console.log(error);

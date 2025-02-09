@@ -4,6 +4,7 @@ export interface IBlogImage {
 }
 
 export interface Blog {
+    _id: string,
     name: string,
     content: string,
     images: IBlogImage[]

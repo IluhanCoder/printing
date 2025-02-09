@@ -30,7 +30,7 @@ export default function BlogPage () {
         getData()
     }, []);
 
-    return <div>
+    if (blog) return <div>
         <div>
             <h1>{blog.name}</h1>
         </div>
@@ -44,4 +44,5 @@ export default function BlogPage () {
         <p>{blog.content}</p>
       </div>
     </div>
+    else return <div></div>
 }

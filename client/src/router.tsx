@@ -12,6 +12,7 @@ import OrderDetailsPage from "./order/order-details-page";
 import OrderListPage from "./order/order-list-page";
 import NewBlogPage from "./blog/create-blog-page";
 import BlogPage from "./blog/blog-page";
+import BlogList from "./blog/blog-list-page";
 
 export default function Router() {
     return <Routes>
@@ -28,5 +29,6 @@ export default function Router() {
         <Route path="/order-list" element={<OrderListPage/>}/>
         <Route path="/create-blog" element={<NewBlogPage/>}/>
         <Route path="/blog/:id" element={<BlogPage/>}/>
+        <Route path="/blog-list" element={<BlogList/>}/>
     </Routes>
 }
