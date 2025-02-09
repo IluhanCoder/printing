@@ -9,6 +9,7 @@ import ServiceDetailsWrapper from "./service/service-details-wrapper";
 import ServicesListPage from "./service/services-list-page";
 import OrderPage from "./order/order-page";
 import OrderDetailsPage from "./order/order-details-page";
+import OrderListPage from "./order/order-list-page";
 
 export default function Router() {
     return <Routes>
@@ -22,5 +23,6 @@ export default function Router() {
         <Route path="/services-list" element={<ServicesListPage/>}/>
         <Route path="/order/:serviceId" element={<OrderPage/>}/>
         <Route path="/order-details/:orderId" element={<OrderDetailsPage/>}/>
+        <Route path="/order-list" element={<OrderListPage/>}/>
     </Routes>
 }

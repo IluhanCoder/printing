@@ -1,4 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { IService } from '../service/service-model';
+import { IData } from '../data/data-model';
+import { IUser } from '../user/user-model';
 
 // Define an interface for the file data stored in the order.
 export interface IOrderFile {
@@ -14,6 +17,18 @@ export interface IOrder extends Document {
   service: mongoose.Types.ObjectId;
   processing: mongoose.Types.ObjectId;
   from: mongoose.Types.ObjectId;
+  status: 'pending' | 'accepted' | 'payed' | 'sent' | 'recieved';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface OrderResponse {
+  desc: string;
+  adress: string;
+  file: IOrderFile;
+  service: IService;
+  processing: IData;
+  from: IUser;
   status: 'pending' | 'accepted' | 'payed' | 'sent' | 'recieved';
   createdAt: Date;
   updatedAt: Date;

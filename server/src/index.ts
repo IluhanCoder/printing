@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.use((req: Request, res: Response, next: NextFunction) => { console.log(req.body); next()} );
+app.use((req: Request, res: Response, next: NextFunction) => { next()} );
 
 app.use(router);
 

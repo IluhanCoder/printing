@@ -16,4 +16,6 @@ OrderRouter.get("/:orderId", orderController.getOrder);
 // Update order status endpoint
 OrderRouter.patch("/:orderId/status", orderController.updateStatus);
 
+OrderRouter.get("/user/:userId", orderController.fetchOrdersForUser);
+
 export default OrderRouter;

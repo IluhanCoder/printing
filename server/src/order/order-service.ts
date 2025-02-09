@@ -1,6 +1,9 @@
 // order-service.ts
 import mongoose from "mongoose";
-import OrderModel, { IOrder } from "./order-model";
+import OrderModel, { IOrder, OrderResponse } from "./order-model";
+import ServiceModel, { IService } from "../service/service-model";
+import { IData } from "../data/data-model";
+import { IUser } from "../user/user-model";
 
 export default new class OrderService {
   async createOrder(credentials: any) {
@@ -47,5 +50,26 @@ export default new class OrderService {
       throw new Error("Order not found");
     }
     return order;
+  }
+
+  async fetchOrdersForUser(userId: string): Promise<OrderResponse[]> {
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+  
+    const servicesByUser = await ServiceModel.find({ user: userObjectId }).distinct("_id");
+  
+    const orders = await OrderModel.find({
+      $or: [{ from: userObjectId }, { service: { $in: servicesByUser } }]
+    })
+      .populate<{ service: IService }>("service")
+      .populate<{ processing: IData }>("processing")
+      .populate<{ from: IUser }>("from")
+      .lean();
+  
+    return orders.map(order => ({
+      ...order,
+      service: order.service as IService,
+      processing: order.processing as IData,
+      from: order.from as IUser,
+    })) as OrderResponse[];
   }
 }();
