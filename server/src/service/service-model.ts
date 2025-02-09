@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 
-export interface IServiceImage {
+export interface IImage {
   data: Buffer;
   contentType: string;
 }
@@ -11,7 +11,7 @@ export interface IService extends Document {
   desc: string,
   material: mongoose.Types.ObjectId,
   technology: mongoose.Types.ObjectId,
-  images: IServiceImage[],
+  images: IImage[],
   user: mongoose.Types.ObjectId
 }
 
@@ -24,7 +24,7 @@ export interface ServiceCredentials {
     user: string
 }
 
-const ServiceImageSchema: Schema = new Schema({
+export const ImageSchema: Schema = new Schema({
     data: { type: Buffer, required: true },
     contentType: { type: String, required: true },
   });
@@ -36,7 +36,7 @@ const serviceSchema: Schema = new Schema(
     material: { type: mongoose.Types.ObjectId, ref: "Data" },
     technology: { type: mongoose.Types.ObjectId, ref: "Data" },
     user: { type: mongoose.Types.ObjectId, ref: "User" },
-    images: [ServiceImageSchema]
+    images: [ImageSchema]
   }
 );
 
