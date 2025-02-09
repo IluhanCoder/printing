@@ -32,7 +32,7 @@ export default new class BlogService {
         }
     }
 
-    async getById(id: string): Promise<{blog: Blog}> {
+    async getById(id: string) {
         try {
             return (await api.get(`/blog/${id}`)).data
         } catch (error) {

@@ -10,10 +10,20 @@ export default new class BlogService {
     }
 
     async getById(id: string) {
-        await BlogModel.findById(id);
+        const blog = await BlogModel.findById(id);
+        if (!blog) {
+            throw new Error("blog not found");
+        }
+        const blogObj = blog.toObject();
+        blogObj.images = blogObj.images.map((img: any) => ({
+        data: img.data.toString("base64"),
+        contentType: img.contentType,
+        }));
+
+        return blogObj;
     }
 
     async fetchBlogs() {
-        await BlogModel.find();
+        return await BlogModel.find();
     }
 }
