@@ -3,7 +3,7 @@ import axios from "axios";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import api from "../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/auth-context";
 
 interface UploadedImage {
@@ -25,6 +25,8 @@ interface ServiceDetailsPageProps {
 }
 
 export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProps) {
+  const navigate = useNavigate();
+
   const [service, setService] = useState<ServiceDetails | null>(null);
   const [galleryImages, setGalleryImages] = useState<UploadedImage[]>([]);
 
@@ -57,6 +59,10 @@ export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProp
     return <div>Loading service...</div>;
   }
 
+  const openChat = () => {
+    navigate(`/chat/${currentUserId}/${service.user._id}/${serviceId}`);
+  };
+
   return (
     <div>
       <h1>{service.name}</h1>
@@ -87,6 +93,7 @@ export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProp
           <ImageGallery items={galleryImages} />
         </div>
       )}
+      <button onClick={openChat}>Chat with Service Executor</button>
       {/* Show Order button if current user is not the creator */}
       {currentUserId && currentUserId !== service.user._id && (
         <div style={{ marginTop: "20px" }}>

@@ -6,6 +6,7 @@ import ServiceRouter from "./service/service-router";
 import authMiddleware from "./auth/auth-middleware";
 import OrderRouter from "./order/order-router";
 import blogRouter from "./blog/blog-router";
+import ChatRouter from "./chat/chat-router";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/data', DataRouter);
 router.use('/service', ServiceRouter);
 router.use('/order', OrderRouter);
 router.use('/blog', blogRouter);
+router.use('/chat', ChatRouter);
 
 export default router;
