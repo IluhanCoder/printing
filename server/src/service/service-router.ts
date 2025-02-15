@@ -10,5 +10,6 @@ const upload = multer({ storage });
 ServiceRouter.post("/", upload.array("images"), serviceController.createService);
 ServiceRouter.get("/:id", serviceController.getServiceDetails);
 ServiceRouter.get("/", serviceController.fetchServices);
+ServiceRouter.get("/:serviceId/feedback", serviceController.getServiceFeedback);
 
 export default ServiceRouter;

@@ -14,10 +14,16 @@ interface UploadedImage {
 interface ServiceDetails {
   name: string;
   desc: string;
-  user: { _id: string, username: string };
+  user: { _id: string; username: string };
   technology: { name: string; desc: string };
   material: { name: string; desc: string };
   images: { data: string; contentType: string }[];
+}
+
+interface Feedback {
+  feedback: {text: string;
+  points: number; }
+  from: { _id: string; username: string };
 }
 
 interface ServiceDetailsPageProps {
@@ -26,20 +32,18 @@ interface ServiceDetailsPageProps {
 
 export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProps) {
   const navigate = useNavigate();
-
   const [service, setService] = useState<ServiceDetails | null>(null);
   const [galleryImages, setGalleryImages] = useState<UploadedImage[]>([]);
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]); // State for feedbacks
 
   const userContext = useContext(AuthContext);
   const currentUserId = userContext.userId;
 
+  // Fetch Service Details and Feedbacks
   useEffect(() => {
-    console.log(currentUserId);
     async function fetchService() {
       try {
         const res = await api.get(`/service/${serviceId}`);
-        console.log(res);
-
         setService(res.data);
 
         // Map images to the format expected by react-image-gallery
@@ -48,8 +52,12 @@ export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProp
           return { original: dataUrl, thumbnail: dataUrl };
         });
         setGalleryImages(gallery);
+
+        // Fetch feedbacks
+        const feedbackRes = await api.get(`/service/${serviceId}/feedback`);
+        setFeedbacks([...feedbackRes.data.feedbacks]);
       } catch (error) {
-        console.error("Failed to fetch service", error);
+        console.error("Failed to fetch service or feedbacks", error);
       }
     }
     fetchService();
@@ -93,8 +101,9 @@ export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProp
           <ImageGallery items={galleryImages} />
         </div>
       )}
+
       <button onClick={openChat}>Chat with Service Executor</button>
-      {/* Show Order button if current user is not the creator */}
+
       {currentUserId && currentUserId !== service.user._id && (
         <div style={{ marginTop: "20px" }}>
           <Link to={`/order/${serviceId}`}>
@@ -102,7 +111,21 @@ export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProp
           </Link>
         </div>
       )}
+
+      {/* Feedbacks Section */}
+      <div style={{ marginTop: "40px" }}>
+        <h2>Feedbacks</h2>
+        {feedbacks.length > 0 ? (
+          feedbacks.map((feedback, index) => (
+            <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+              <p><strong>{feedback.from.username}</strong> rated: {feedback.feedback.points}/5</p>
+              <p>{feedback.feedback.text}</p>
+            </div>
+          ))
+        ) : (
+          <p>No feedback available for this service yet.</p>
+        )}
+      </div>
     </div>
-    
   );
 }

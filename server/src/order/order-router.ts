@@ -18,4 +18,8 @@ OrderRouter.patch("/:orderId/status", orderController.updateStatus);
 
 OrderRouter.get("/user/:userId", orderController.fetchOrdersForUser);
 
+OrderRouter.post("/feedback", orderController.submitFeedback);
+
+OrderRouter.patch("/:orderId/confirm-payment", orderController.confirmPayment);
+
 export default OrderRouter;

@@ -16,6 +16,7 @@ import BlogList from "./blog/blog-list-page";
 import ChatPage from "./chat/chat-page";
 import ChatPageWrapper from "./chat/chat-page-wrapper";
 import ChatsListPage from "./chat/chats-list-page";
+import ProfilePage from "./user/profile-page";
 
 export default function Router() {
     return <Routes>
@@ -35,5 +36,6 @@ export default function Router() {
         <Route path="/blog-list" element={<BlogList/>}/>
         <Route path="/chat/:currentUser/:otherUser/:serviceId" element={<ChatPageWrapper/>} />
         <Route path="/chats-list" element={<ChatsListPage/>}/>
+        <Route path="/profile" element={<ProfilePage/>}/>
     </Routes>
 }

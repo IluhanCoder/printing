@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import orderService from "./order-service";
-import { OrderCredentials } from "./order-model";
+import OrderModel, { OrderCredentials } from "./order-model";
 import { IUser } from "../user/user-model";
 
 export interface ExtendedRequest extends Request {
@@ -58,6 +58,7 @@ export default new class OrderController {
     try {
       const { orderId } = req.params;
       const { status } = req.body;
+      console.log(status)
       const updatedOrder = await orderService.updateOrderStatus(orderId, status);
       res.status(200).json({ order: updatedOrder });
     } catch (error: any) {
@@ -75,4 +76,59 @@ export default new class OrderController {
       res.status(500).json({ message: err.message });
     }
   }
+
+  async submitFeedback(req: ExtendedRequest, res: Response): Promise<void> {
+    const { orderId, feedbackText, feedbackPoints } = req.body;
+  
+    try {
+      // Find the order by ID
+      const order = await OrderModel.findById(orderId);
+      if (!order) {
+        res.status(404).json({ message: "Order not found" });
+        return;
+      }
+
+      // Update the order status to 'received' and set the feedback
+      order.status = "received";
+      order.feedback = {
+        text: feedbackText,
+        points: feedbackPoints,
+        from: { _id: req.user._id as string, username: req.user.username } // Include the user who submitted the feedback
+      };
+  
+      await order.save();
+  
+      res.status(200).json({ message: "Feedback submitted successfully", order });
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      res.status(500).json({ message: "Failed to submit feedback", error });
+    }
+  }
+  
+  async confirmPayment (req, res) {
+    const { orderId } = req.params;
+  
+    try {
+      // Find the order by ID and update the status to "payed"
+      const order = await OrderModel.findByIdAndUpdate(
+        orderId,
+        { status: "payed" },
+        { new: true } // This option returns the updated document
+      );
+  
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      return res.status(200).json({
+        message: "Payment confirmed, order marked as payed.",
+        order,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error confirming payment",
+        error: error.message,
+      });
+    }
+  };
 }();

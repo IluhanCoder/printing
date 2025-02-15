@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import api from "../api";
 import OrderStatusUpdate from "./OrderStatusUpdate";
 import { AuthContext } from "../auth/auth-context";
+import FeedbackForm from "./feedback-form";
 
 // Update the interface to include extra fields for orderer and executor
 interface OrderDetails {
@@ -20,11 +21,19 @@ interface OrderDetails {
     _id: string;
     name: string;
     desc: string;
-    user: { _id: string; username: string; email: string; cell: string; role: string };
+    user: {
+      _id: string;
+      username: string;
+      email: string;
+      cell: string;
+      role: string;
+      cardNumber: string; // Add card number field for the executor
+    };
     technology: { _id: string; name: string; desc: string };
     material: { _id: string; name: string; desc: string };
   };
 }
+
 
 const arrayBufferToBase64 = (buffer: any): string => {
   const byteArray = new Uint8Array(buffer);
@@ -36,8 +45,8 @@ const arrayBufferToBase64 = (buffer: any): string => {
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const [order, setOrder] = useState<OrderDetails | null>(null);
-  
-  // Get the current user's ID from the AuthContext (adjust as needed)
+
+  // Get the current user's ID from the AuthContext
   const { userId: currentUserId } = useContext(AuthContext);
 
   useEffect(() => {
@@ -54,7 +63,6 @@ export default function OrderDetailsPage() {
 
   const downloadFile = () => {
     if (order && order.file && order.file.data) {
-      // Extract nested data if needed
       const binaryData =
         typeof order.file.data === "object" && (order.file.data as any).data
           ? (order.file.data as any).data
@@ -67,6 +75,28 @@ export default function OrderDetailsPage() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    }
+  };
+
+  const handleFeedbackSuccess = () => {
+    async function refreshOrder() {
+      try {
+        const res = await api.get(`/order/${orderId}`);
+        setOrder(res.data);
+      } catch (error) {
+        console.error("Failed to refresh order details", error);
+      }
+    }
+    refreshOrder();
+  };
+
+  const handlePaymentConfirmation = async () => {
+    try {
+      // Update the order status to "payed"
+      const res = await api.patch(`/order/${orderId}/confirm-payment`);
+      setOrder(res.data); // Update the order state after payment is confirmed
+    } catch (error) {
+      console.error("Failed to confirm payment", error);
     }
   };
 
@@ -110,18 +140,39 @@ export default function OrderDetailsPage() {
       <p><strong>Email:</strong> {order.service.user.email}</p>
       <p><strong>Cell:</strong> {order.service.user.cell}</p>
       <p><strong>Role:</strong> {order.service.user.role}</p>
+
+      {/* Conditionally render card number if the order status is accepted and the current user is the orderer */}
+      {order.status === "accepted" && currentUserId === order.from._id && (
+        <div>
+          <h3>Executor's Card Number</h3>
+          <p><strong>Card Number:</strong> {order.service.user.cardNumber}</p>
+        </div>
+      )}
+
+      {/* Conditionally render payment confirmation button if the current user is the executor */}
+      {order.status === "accepted" && currentUserId === order.service.user._id && (
+        <button onClick={handlePaymentConfirmation}>
+          Confirm Payment Received
+        </button>
+      )}
+
       <hr />
       <button onClick={downloadFile}>Download Uploaded File</button>
       <hr />
-      {/* Render the status update component */}
       <OrderStatusUpdate
         orderId={order._id}
         currentStatus={order.status}
         onStatusUpdated={(newStatus) => setOrder({ ...order, status: newStatus })}
-        currentUserId={currentUserId}  // from your auth mechanism
+        currentUserId={currentUserId}
         ordererId={order.from._id}
         executorId={order.service.user._id}
+        executorCard={order.service.user.cardNumber}
       />
+      <hr />
+      {order.status === "received" && currentUserId === order.from._id && (
+        <FeedbackForm orderId={order._id} onSuccess={handleFeedbackSuccess} />
+      )}
     </div>
   );
 }
+

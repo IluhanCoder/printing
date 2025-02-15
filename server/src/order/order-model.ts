@@ -17,9 +17,10 @@ export interface IOrder extends Document {
   service: mongoose.Types.ObjectId;
   processing: mongoose.Types.ObjectId;
   from: mongoose.Types.ObjectId;
-  status: 'pending' | 'accepted' | 'payed' | 'sent' | 'recieved';
+  status: 'pending' | 'accepted' | "money_sent" | 'payed' | 'sent' | 'received';
   createdAt: Date;
   updatedAt: Date;
+  feedback?: Feedback
 }
 
 export interface OrderResponse {
@@ -29,9 +30,15 @@ export interface OrderResponse {
   service: IService;
   processing: IData;
   from: IUser;
-  status: 'pending' | 'accepted' | 'payed' | 'sent' | 'recieved';
+  status: 'pending' | 'accepted' | 'payed' | 'sent' | 'received';
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Feedback {
+  text: string;
+  points: number; // Rating from 1 to 5
+  from: { _id: string; username: string };
 }
 
 // Define the OrderCredentials interface (for creating a new order)
@@ -62,8 +69,14 @@ const orderSchema: Schema = new Schema(
     from: { type: mongoose.Types.ObjectId, ref: "User", required: true },
     status: {
       type: String,
-      enum: ['pending', 'accepted', 'payed', 'sent', 'recieved'],
+      enum: ['pending', 'accepted', 'payed', 'sent', 'received'],
       default: 'pending'
+    },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+    feedback: {
+      text: { type: String },
+      points: { type: Number, min: 1, max: 5 },
     }
   },
   {

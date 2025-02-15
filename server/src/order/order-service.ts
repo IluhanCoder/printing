@@ -24,7 +24,7 @@ export default new class OrderService {
         path: "service",
         populate: [
           // Populate the executor (service.user) with additional fields
-          { path: "user", select: "_id username email cell role" },
+          { path: "user", select: "_id username email cell role cardNumber" },
           { path: "technology", select: "name desc" },
           { path: "material", select: "name desc" }
         ]
@@ -37,7 +37,7 @@ export default new class OrderService {
   }
 
   async updateOrderStatus(orderId: string, status: string): Promise<IOrder> {
-    const allowedStatuses = ['pending', 'accepted', 'payed', 'sent', 'recieved'];
+    const allowedStatuses = ['pending', 'accepted', 'money_sent','payed', 'sent', 'received'];
     if (!allowedStatuses.includes(status)) {
       throw new Error("Invalid status");
     }
