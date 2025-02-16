@@ -14,7 +14,7 @@ interface UploadedImage {
 interface ServiceDetails {
   name: string;
   desc: string;
-  user: { _id: string; username: string };
+  user: { _id: string; username: string, cell: string, email: string };
   technology: { name: string; desc: string };
   material: { name: string; desc: string };
   images: { data: string; contentType: string }[];
@@ -76,6 +76,8 @@ export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProp
       <h1>{service.name}</h1>
       <p>{service.desc}</p>
       <h2>Provider: {service.user.username}</h2>
+        <p>Phone {service.user.cell}</p>
+        <p>Email {service.user.email}</p>
       <div>
         <h3>Technology</h3>
         <p>

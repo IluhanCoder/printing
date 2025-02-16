@@ -29,7 +29,7 @@ export default new class ServiceService {
 
     async getServiceDetails(id: string) {
         const service = await ServiceModel.findById(id)
-            .populate("user", "_id username") // populate the creator’s username
+            .populate("user", "_id username cell email") // populate the creator’s username
             .populate("technology", "name desc") // populate technology name and description
             .populate("material", "name desc")   // populate material name and description
             .exec();

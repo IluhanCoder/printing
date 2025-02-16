@@ -7,6 +7,7 @@ const ProfilePage: React.FC = () => {
     username: "",
     email: "",
     cardNumber: "",
+    cell: ""
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -59,6 +60,10 @@ const ProfilePage: React.FC = () => {
         <label>
           Card Number:
           <input type="text" name="cardNumber" value={userData.cardNumber} onChange={handleChange} />
+        </label>
+        <label>
+          Phone Number:
+          <input type="text" name="cell" value={userData.cell} onChange={handleChange} />
         </label>
         <button type="submit">Save Changes</button>
       </form>
