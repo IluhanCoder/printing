@@ -53,6 +53,7 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
       message = (
         <>
           <p>Executor's card number: <strong>{executorCard}</strong></p>
+          <p>{`ціна: ${price} грн`}</p>
           <button onClick={() => updateStatus("money_sent")}>
             Mark as Money Sent
           </button>

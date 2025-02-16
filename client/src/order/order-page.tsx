@@ -10,6 +10,7 @@ interface OrderCredentials {
   adress: string;
   file: File | null;
   service: string;     // Service id from route parameter
+  budget?: number
 }
 
 // Default values for the order form
@@ -82,6 +83,7 @@ export default function OrderPage() {
     formData.append("processing", orderData.processing);
     formData.append("adress", orderData.adress);
     formData.append("service", orderData.service);
+    formData.append("budget", orderData.budget.toString());
     if (orderData.file) {
       formData.append("file", orderData.file);
     }
@@ -139,6 +141,12 @@ export default function OrderPage() {
               required
               style={{ width: "100%", marginTop: "0.5rem" }}
             />
+          </label>
+        </div>
+        <div>
+          <label>
+            Budget
+            <input type="number" name="budget" onChange={handleChange} defaultValue={undefined}/>
           </label>
         </div>
         <div style={{ marginBottom: "1rem" }}>
