@@ -32,6 +32,8 @@ interface OrderDetails {
     technology: { _id: string; name: string; desc: string };
     material: { _id: string; name: string; desc: string };
   };
+  price?: number,
+  budget?: number
 }
 
 
@@ -45,19 +47,21 @@ const arrayBufferToBase64 = (buffer: any): string => {
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const [order, setOrder] = useState<OrderDetails | null>(null);
+  const [priceInput, setPriceInput] = useState<number>(0);
 
   // Get the current user's ID from the AuthContext
   const { userId: currentUserId } = useContext(AuthContext);
 
-  useEffect(() => {
-    async function fetchOrder() {
-      try {
-        const res = await api.get(`/order/${orderId}`);
-        setOrder(res.data);
-      } catch (error) {
-        console.error("Failed to fetch order details", error);
-      }
+  async function fetchOrder() {
+    try {
+      const res = await api.get(`/order/${orderId}`);
+      setOrder({...res.data});
+    } catch (error) {
+      console.error("Failed to fetch order details", error);
     }
+  }
+
+  useEffect(() => {
     fetchOrder();
   }, [orderId]);
 
@@ -99,6 +103,20 @@ export default function OrderDetailsPage() {
       console.error("Failed to confirm payment", error);
     }
   };
+
+  const handleSetPrice = async () => {
+    try {
+      if(order.budget && priceInput > order.budget) {
+        alert("Ціна не може перевищувати бюджет замовника")
+        return;
+      }
+      const res = await api.patch(`/order/${orderId}/price`, {price: priceInput});
+      alert("ціну успішно встановлено");
+      await fetchOrder();
+    } catch (error) {
+      console.error("Failed to set price", error);
+    }
+  }
 
   if (!order) return <div>Loading order details...</div>;
 
@@ -156,11 +174,24 @@ export default function OrderDetailsPage() {
         </button>
       )}
 
+      {order.status === "pending" && currentUserId === order.service.user._id && (
+        <div>
+          {order.budget && <div>
+              {`бюджет замовника: ${order.budget} грн`}
+            </div>}
+          <input min={0} type="number" defaultValue={order.price ?? 0} onChange={(e) => setPriceInput(Number(e.target.value))}/>
+          <button type="button" onClick={handleSetPrice}>
+            Set Price
+          </button>
+        </div>
+      )}
+
       <hr />
       <button onClick={downloadFile}>Download Uploaded File</button>
       <hr />
       <OrderStatusUpdate
         orderId={order._id}
+        price={order.price}
         currentStatus={order.status}
         onStatusUpdated={(newStatus) => setOrder({ ...order, status: newStatus })}
         currentUserId={currentUserId}

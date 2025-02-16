@@ -22,4 +22,6 @@ OrderRouter.post("/feedback", orderController.submitFeedback);
 
 OrderRouter.patch("/:orderId/confirm-payment", orderController.confirmPayment);
 
+OrderRouter.patch("/:orderId/price", orderController.setPrice);
+
 export default OrderRouter;

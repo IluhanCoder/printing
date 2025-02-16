@@ -13,7 +13,7 @@ export interface ExtendedRequest extends Request {
 export default new class OrderController {
   async createOrder(req: ExtendedRequest, res: Response): Promise<void> {
     try {
-      const { desc, processing, adress, service } = req.body;
+      const { desc, processing, adress, service, budget } = req.body;
       const file = req.file;
       if (!file) {
         throw new Error("File is required");
@@ -26,6 +26,7 @@ export default new class OrderController {
         desc,
         processing,
         adress,
+        budget,
         file: fileObj,
         service,
         from: req.user ? req.user._id as mongoose.Types.ObjectId : undefined,
@@ -131,4 +132,16 @@ export default new class OrderController {
       });
     }
   };
+
+  async setPrice(req: Request, res: Response) {
+    try {
+      const {orderId} = req.params;
+      const {price} = req.body;
+      await orderService.setPrice(orderId, price);
+      res.status(200).json({});
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: error.message });
+    }
+  }
 }();

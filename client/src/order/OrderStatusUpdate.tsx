@@ -9,10 +9,12 @@ interface OrderStatusUpdateProps {
   ordererId: string; // id of the user who made the order
   executorId: string; // id of the service creator (executor)
   executorCard: string; // executor's card number
+  price: number | undefined;
 }
 
 const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
   orderId,
+  price,
   currentStatus,
   onStatusUpdated,
   currentUserId,
@@ -24,6 +26,10 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
 
   const updateStatus = async (newStatus: string) => {
     try {
+      if(newStatus === "accepted" && !price) {
+        alert("ви маєте встановити вартість замовлення");
+        return;
+      }
       const res = await api.patch(`/order/${orderId}/status`, { status: newStatus });
       onStatusUpdated(res.data.order.status);
     } catch (error) {

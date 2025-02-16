@@ -20,7 +20,9 @@ export interface IOrder extends Document {
   status: 'pending' | 'accepted' | "money_sent" | 'payed' | 'sent' | 'received';
   createdAt: Date;
   updatedAt: Date;
-  feedback?: Feedback
+  feedback?: Feedback,
+  budget?: number,
+  price?: number
 }
 
 export interface OrderResponse {
@@ -33,6 +35,8 @@ export interface OrderResponse {
   status: 'pending' | 'accepted' | 'payed' | 'sent' | 'received';
   createdAt: Date;
   updatedAt: Date;
+  budget?: number;
+  price?: number;
 }
 
 export interface Feedback {
@@ -52,6 +56,7 @@ export interface OrderCredentials {
   };
   service: string;
   from: mongoose.Types.ObjectId;
+  budget?: number;
 }
 
 const OrderFileSchema: Schema = new Schema({
@@ -77,7 +82,9 @@ const orderSchema: Schema = new Schema(
     feedback: {
       text: { type: String },
       points: { type: Number, min: 1, max: 5 },
-    }
+    },
+    budget: { type: Number, required: false },
+    price: { type: Number, required: false }
   },
   {
     timestamps: true,

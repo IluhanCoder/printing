@@ -72,4 +72,8 @@ export default new class OrderService {
       from: order.from as IUser,
     })) as OrderResponse[];
   }
+
+  async setPrice(orderId: string, newPrice: number) {
+    await OrderModel.findByIdAndUpdate(orderId, {price: newPrice});
+  }
 }();
