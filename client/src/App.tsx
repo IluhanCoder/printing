@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router';
 import Header from './header';
 import Router from './router';
 import { AuthProvider } from './auth/auth-context';
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   return <BrowserRouter>
