@@ -19,17 +19,21 @@ const Header: React.FC = () => {
         </NavLink>
         <nav className="flex space-x-6">
           {authContext?.isAuthenticated && (
-            <>
-              <NavLink
-                to="/courses"
-                className={({ isActive }) =>
-                  isActive
-                    ? 'border-b-2 border-gray-300 pb-1 font-medium text-gray-50'
-                    : 'hover:text-gray-200'
-                }
-              >
-                Тестова сторінка
-              </NavLink>
+            authContext.userRole === "user" && <>
+              <NavLink to="/blog-list">Наш блог</NavLink>
+              <NavLink to="/profile">Профіль</NavLink>
+              <NavLink to="/technologies">Наявні технології</NavLink>
+              <NavLink to="/create-service">Створити послугу</NavLink>
+              <NavLink to="/services-list">Послуги</NavLink>
+              <NavLink to="/order-list">Ваші замовлення</NavLink>
+              <NavLink to="/technologies">Наявні технології</NavLink>
+              <NavLink to="/analytics">Аналітика замовлень</NavLink>
+            </> || authContext.userRole === "admin" && <>
+                <NavLink to="/blog-list">Блог</NavLink>
+                <NavLink to="/create-blog">Створити статтю</NavLink>
+                <NavLink
+                  to="/create-data"
+                  >Додати данні</NavLink>
             </>
           )}
         </nav>
@@ -42,12 +46,18 @@ const Header: React.FC = () => {
               Вийти
             </button>
           ) : (
-            <NavLink
+            <><NavLink
               to="/login"
               className="px-4 py-2 bg-gray-700 text-gray-100 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               Увійти
             </NavLink>
+            <NavLink
+            to="/registration"
+            className="px-4 py-2 bg-gray-700 text-gray-100 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            Зареєструватися
+          </NavLink></>
           )}
         </div>
       </div>
