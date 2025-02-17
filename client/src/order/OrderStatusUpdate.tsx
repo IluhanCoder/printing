@@ -39,76 +39,119 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
 
   let actionButton = null;
   let message: React.ReactNode = ""; // Change from string to React.ReactNode
+  let statusColor = ""; // Color based on status
 
-  if (currentStatus === "pending") {
-    if (currentUserId === executorId) {
-      actionButton = (
-        <button onClick={() => updateStatus("accepted")}>Accept Order</button>
-      );
-    } else {
-      message = "Waiting for the service creator to accept the order.";
-    }
-  } else if (currentStatus === "accepted") {
-    if (currentUserId === ordererId) {
-      message = (
-        <>
-          <p>Executor's card number: <strong>{executorCard}</strong></p>
-          <p>{`ціна: ${price} грн`}</p>
-          <button onClick={() => updateStatus("money_sent")}>
-            Mark as Money Sent
+  switch (currentStatus) {
+    case "pending":
+      statusColor = "text-yellow-500";
+      if (currentUserId === executorId) {
+        actionButton = (
+          <button
+            className="bg-yellow-500 text-white p-2 rounded mt-4"
+            onClick={() => updateStatus("accepted")}
+          >
+            Accept Order
           </button>
-        </>
-      );
-    } else {
-      message = "Waiting for the orderer to send the money.";
-    }
-  } else if (currentStatus === "money_sent") {
-    if (currentUserId === executorId) {
-      actionButton = (
-        <>
-          {!paymentConfirmed ? (
+        );
+      } else {
+        message = "Waiting for the service creator to accept the order.";
+      }
+      break;
+
+    case "accepted":
+      statusColor = "text-blue-500";
+      if (currentUserId === ordererId) {
+        message = (
+          <>
+            <p>Executor's card number: <strong>{executorCard}</strong></p>
+            <p>{`Price: ${price} грн`}</p>
             <button
-              onClick={() => {
-                setPaymentConfirmed(true);
-                updateStatus("payed");
-              }}
+              className="bg-blue-500 text-white p-2 rounded mt-4"
+              onClick={() => updateStatus("money_sent")}
             >
-              Confirm Payment Received
+              Mark as Money Sent
             </button>
-          ) : (
-            <p>Payment has been confirmed. Awaiting next steps.</p>
-          )}
-        </>
-      );
-    } else {
-      message = "Waiting for the executor to confirm payment.";
-    }
-  } else if (currentStatus === "payed") {
-    if (currentUserId === executorId) {
-      actionButton = (
-        <button onClick={() => updateStatus("sent")}>Mark as Sent</button>
-      );
-    } else {
-      message = "Waiting for the service creator to mark the order as sent.";
-    }
-  } else if (currentStatus === "sent") {
-    if (currentUserId === ordererId) {
-      actionButton = (
-        <button onClick={() => updateStatus("received")}>
-          Mark as Received
-        </button>
-      );
-    } else {
-      message = "Waiting for the orderer to confirm receipt.";
-    }
-  } else {
-    message = "No further status updates available.";
+          </>
+        );
+      } else {
+        message = "Waiting for the orderer to send the money.";
+      }
+      break;
+
+    case "money_sent":
+      statusColor = "text-yellow-400";
+      if (currentUserId === executorId) {
+        actionButton = (
+          <>
+            {!paymentConfirmed ? (
+              <button
+                className="bg-yellow-400 text-white p-2 rounded mt-4"
+                onClick={() => {
+                  setPaymentConfirmed(true);
+                  updateStatus("payed");
+                }}
+              >
+                Confirm Payment Received
+              </button>
+            ) : (
+              <p>Payment has been confirmed. Awaiting next steps.</p>
+            )}
+          </>
+        );
+      } else {
+        message = "Waiting for the executor to confirm payment.";
+      }
+      break;
+
+    case "payed":
+      statusColor = "text-green-500";
+      if (currentUserId === executorId) {
+        actionButton = (
+          <button
+            className="bg-green-500 text-white p-2 rounded mt-4"
+            onClick={() => updateStatus("sent")}
+          >
+            Mark as Sent
+          </button>
+        );
+      } else {
+        message = "Waiting for the service creator to mark the order as sent.";
+      }
+      break;
+
+    case "sent":
+      statusColor = "text-teal-500";
+      if (currentUserId === ordererId) {
+        actionButton = (
+          <button
+            className="bg-teal-500 text-white p-2 rounded mt-4"
+            onClick={() => updateStatus("received")}
+          >
+            Mark as Received
+          </button>
+        );
+      } else {
+        message = "Waiting for the orderer to confirm receipt.";
+      }
+      break;
+
+    case "received":
+      statusColor = "text-green-700";
+      message = "The order has been received. No further action required.";
+      break;
+
+    default:
+      statusColor = "text-gray-500";
+      message = "No further status updates available.";
   }
 
   return (
-    <div>
-      <h3>Update Order Status</h3>
-      {actionButton ? actionButton : <p>{message}</p>}
+    <div className="p-4 border border-gray-200 rounded-lg shadow-lg">
+      <h3 className={`text-xl font-bold ${statusColor}`}>Update Order Status</h3>
+      <div className="mt-4">
+        <p className={statusColor}>{message}</p>
+        {actionButton && actionButton}
+      </div>
     </div>
   );
 };

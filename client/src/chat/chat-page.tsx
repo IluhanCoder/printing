@@ -52,8 +52,9 @@ export default function ChatPage({ currentUser, otherUser, serviceId }: ChatProp
   };
 
   return (
-    <div className="flex flex-col max-w-lg mx-auto border p-4 rounded-lg shadow-lg">
-      <div className="h-80 overflow-y-auto border-b mb-2 p-2">
+    <div className="p-20 w-full flex flex-col gap-4">
+    <div className="flex flex-col w-1/2 mx-auto border p-4 rounded-lg shadow-lg">
+      <div className="overflow-y-auto border-b mb-2 p-2">
         {messages.map((msg) => (
             <div key={msg._id} className="mb-2">
             {/* Sender's name (aligned to left or right) */}
@@ -86,6 +87,7 @@ export default function ChatPage({ currentUser, otherUser, serviceId }: ChatProp
           Send
         </button>
       </div>
+    </div>
     </div>
   );
 }

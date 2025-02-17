@@ -46,39 +46,33 @@ export default function ServicesListPage() {
   }, [searchName, searchTechnology, searchMaterial]);
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h1>Browse Services</h1>
-      <div style={{ marginBottom: "1rem" }}>
+    <div className="p-4">
+      <h1 className="text-3xl font-semibold text-gray-800 mb-6">Browse Services</h1>
+      <div className="mb-6 flex space-x-4">
         <input
           type="text"
           placeholder="Search by name"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
-          style={{ marginRight: "0.5rem" }}
+          className="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="text"
           placeholder="Search by technology"
           value={searchTechnology}
           onChange={(e) => setSearchTechnology(e.target.value)}
-          style={{ marginRight: "0.5rem" }}
+          className="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="text"
           placeholder="Search by material"
           value={searchMaterial}
           onChange={(e) => setSearchMaterial(e.target.value)}
-          style={{ marginRight: "0.5rem" }}
+          className="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-          gap: "1rem",
-        }}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service) => {
           const firstImageUrl =
             service.images.length > 0
@@ -89,33 +83,30 @@ export default function ServicesListPage() {
           return (
             <div
               key={service._id}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                padding: "1rem",
-                textAlign: "center",
-              }}
+              className="border border-gray-300 rounded-lg p-4 shadow-sm hover:shadow-lg transition-shadow duration-300"
             >
-              <h2>{service.name}</h2>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">{service.name}</h2>
               {firstImageUrl ? (
                 <img
                   src={firstImageUrl}
                   alt={service.name}
-                  style={{ width: "100%", height: "auto", marginBottom: "0.5rem" }}
+                  className="w-full h-48 object-cover mb-4 rounded-md"
                 />
               ) : (
-                <div style={{ height: "150px", backgroundColor: "#f0f0f0", marginBottom: "0.5rem" }}>
-                  No Image
+                <div className="w-full h-48 bg-gray-200 mb-4 rounded-md flex items-center justify-center">
+                  <span className="text-gray-500">No Image</span>
                 </div>
               )}
-              <p>
-                <strong>Technology:</strong> {service.technology.name}
+              <p className="text-sm text-gray-600 mb-2">
+                <strong className="font-medium">Technology:</strong> {service.technology.name}
               </p>
-              <p>
-                <strong>Material:</strong> {service.material.name}
+              <p className="text-sm text-gray-600 mb-4">
+                <strong className="font-medium">Material:</strong> {service.material.name}
               </p>
               <Link to={`/service/${service._id}`}>
-                <button style={{ marginTop: "0.5rem" }}>View Details</button>
+                <button className="w-full py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
+                  View Details
+                </button>
               </Link>
             </div>
           );

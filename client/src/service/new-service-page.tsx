@@ -60,58 +60,93 @@ export default function NewServicePage () {
   };
 
   return (
-    <div>
-      <h1>Create Printing Service</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div>
-          <label>Service Name:</label>
-          <input
-            type="text"
-            name="name"
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea
-            name="desc"
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {technologyOptions &&
-            <select value={formData.technology} onChange={(e) => setFormData({...formData, technology: e.target.value})}>
-                {technologyOptions.map((entry: Data) => <option value={entry._id}>
-                    {entry.name}
-                </option>)}
-            </select>
-        }
-        {materialOptions && <div>
-            <select value={formData.material} onChange={(e) => setFormData({...formData, technology: e.target.value})}>
-                {materialOptions.map((entry: Data) => <option value={entry._id}>
-                    {entry.name}
-                </option>)}
-            </select>
-        </div>}
-        <div>
-          <label>Upload Image:</label>
-          {/* Remove "multiple" to allow adding images one at a time */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </div>
-        <button type="submit">Create Service</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+      <div className="max-w-2xl w-full bg-white p-8 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Create Printing Service</h1>
+        
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Service Name:</label>
+            <input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-      {galleryImages.length > 0 && (
-        <div style={{ marginTop: '20px' }}>
-          <h2>Uploaded Images</h2>
-          <ImageGallery items={galleryImages} />
-        </div>
-      )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description:</label>
+            <textarea
+              name="desc"
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          {technologyOptions && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Technology:</label>
+              <select
+                value={formData.technology}
+                onChange={(e) => setFormData({ ...formData, technology: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {technologyOptions.map((entry: Data) => (
+                  <option key={entry._id} value={entry._id}>
+                    {entry.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {materialOptions && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Material:</label>
+              <select
+                value={formData.material}
+                onChange={(e) => setFormData({ ...formData, material: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {materialOptions.map((entry: Data) => (
+                  <option key={entry._id} value={entry._id}>
+                    {entry.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Upload Image:</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full text-gray-700"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Create Service
+          </button>
+        </form>
+
+        {galleryImages.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-800">Uploaded Images</h2>
+            <div className="mt-4">
+              <ImageGallery items={galleryImages} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

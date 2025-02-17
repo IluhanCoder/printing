@@ -15,7 +15,7 @@ const Header: React.FC = () => {
     <header className="bg-gray-800 text-gray-100 py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <NavLink to="/" className="text-xl font-semibold">
-          єСтудент
+          3D Druk
         </NavLink>
         <nav className="flex space-x-6">
           {authContext?.isAuthenticated && (

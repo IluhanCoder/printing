@@ -72,60 +72,99 @@ export default function ServiceDetailsPage({ serviceId }: ServiceDetailsPageProp
   };
 
   return (
-    <div>
-      <h1>{service.name}</h1>
-      <p>{service.desc}</p>
-      <h2>Provider: {service.user.username}</h2>
-        <p>Phone {service.user.cell}</p>
-        <p>Email {service.user.email}</p>
-      <div>
-        <h3>Technology</h3>
-        <p>
-          <strong>Name:</strong> {service.technology.name}
-        </p>
-        <p>
-          <strong>Description:</strong> {service.technology.desc}
-        </p>
-      </div>
-      <div>
-        <h3>Material</h3>
-        <p>
-          <strong>Name:</strong> {service.material.name}
-        </p>
-        <p>
-          <strong>Description:</strong> {service.material.desc}
-        </p>
-      </div>
+    <div className="py-6 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-semibold text-gray-800">{service.name}</h1>
+      <p className="mt-2 text-lg text-gray-700">{service.desc}</p>
 
-      {galleryImages.length > 0 && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>Uploaded Images</h2>
-          <ImageGallery items={galleryImages} />
-        </div>
-      )}
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Left Side: Text Blocks */}
+        <div>
+          {/* Provider Block */}
+          <div className="bg-white p-6 shadow-lg rounded-lg mb-8">
+            <h3 className="text-xl font-semibold text-gray-800">Provider</h3>
+            <p className="text-gray-700 mt-2">
+              <strong className="font-medium">Username:</strong> {service.user.username}
+            </p>
+            <p className="text-gray-700 mt-2">
+              <strong className="font-medium">Phone:</strong> {service.user.cell}
+            </p>
+            <p className="text-gray-700 mt-2">
+              <strong className="font-medium">Email:</strong> {service.user.email}
+            </p>
+          </div>
 
-      <button onClick={openChat}>Chat with Service Executor</button>
+          {/* Technology Block */}
+          <div className="bg-white p-6 shadow-lg rounded-lg mb-8">
+            <h3 className="text-xl font-semibold text-gray-800">Technology</h3>
+            <p className="text-gray-700 mt-2">
+              <strong className="font-medium">Name:</strong> {service.technology.name}
+            </p>
+            <p className="text-gray-700 mt-2">
+              <strong className="font-medium">Description:</strong> {service.technology.desc}
+            </p>
+          </div>
 
-      {currentUserId && currentUserId !== service.user._id && (
-        <div style={{ marginTop: "20px" }}>
+          {/* Material Block */}
+          <div className="bg-white p-6 shadow-lg rounded-lg">
+            <h3 className="text-xl font-semibold text-gray-800">Material</h3>
+            <p className="text-gray-700 mt-2">
+              <strong className="font-medium">Name:</strong> {service.material.name}
+            </p>
+            <p className="text-gray-700 mt-2">
+              <strong className="font-medium">Description:</strong> {service.material.desc}
+            </p>
+          </div>
+
+          {currentUserId && currentUserId !== service.user._id && (
+            <div className="flex flex-col gap-2 p-4">
+            <div className="flex justify-center">
           <Link to={`/order/${serviceId}`}>
-            <button>Order This Service</button>
+            <button className="py-2 px-10 bg-green-500 text-white text-2xl font-medium rounded-lg hover:bg-green-600 transition-colors">
+              Order This Service
+            </button>
           </Link>
+          </div>
+          <div className="flex justify-center">
+          <button
+          onClick={openChat}
+          className="py-2 px-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Chat with Service Executor
+        </button>
         </div>
-      )}
+          </div>
+        )}
+        </div>
+
+        {/* Right Side: Image Gallery */}
+        {galleryImages.length > 0 && (
+          <div className="bg-white p-6 shadow-lg rounded-lg">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Uploaded Images</h2>
+            <ImageGallery items={galleryImages} />
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 flex justify-between items-center">
+        
+      </div>
 
       {/* Feedbacks Section */}
-      <div style={{ marginTop: "40px" }}>
-        <h2>Feedbacks</h2>
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold text-gray-800">Feedbacks</h2>
         {feedbacks.length > 0 ? (
           feedbacks.map((feedback, index) => (
-            <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
-              <p><strong>{feedback.from.username}</strong> rated: {feedback.feedback.points}/5</p>
-              <p>{feedback.feedback.text}</p>
+            <div
+              key={index}
+              className="bg-white p-4 mt-4 rounded-lg shadow-md"
+            >
+              <p className="text-lg font-semibold">{feedback.from.username}</p>
+              <p className="text-gray-600">Rated: {feedback.feedback.points}/5</p>
+              <p className="mt-2 text-gray-700">{feedback.feedback.text}</p>
             </div>
           ))
         ) : (
-          <p>No feedback available for this service yet.</p>
+          <p className="mt-4 text-gray-600">No feedback available for this service yet.</p>
         )}
       </div>
     </div>
