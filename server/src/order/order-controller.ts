@@ -74,6 +74,7 @@ export default new class OrderController {
       const orders = await orderService.fetchOrdersForUser(userId);
       res.json(orders);
     } catch (err) {
+      console.log(err);
       res.status(500).json({ message: err.message });
     }
   }
