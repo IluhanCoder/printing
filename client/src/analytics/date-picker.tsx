@@ -25,12 +25,12 @@ function DatePicker({handleChange, value, className}: LocalParams) {
         <div className="flex flex-col gap-1">
             <div>дата початку</div>
             {/* <input type="date" defaultValue={moment((value) ? value.startDate : new Date()).format('YYYY-MM-DD')} onChange={changeStartDateHandler}/> */}
-            <ReactDatePicker locale="ua" value={moment((value) ? value.startDate : new Date()).format('YYYY-MM-DD')} onChange={changeStartDateHandler}/>
+            <ReactDatePicker className="border border-gray-300 bg-gray-50 rounded-sm text-sm px-2 py-2 focus:border-blue-100" locale="ua" value={moment((value) ? value.startDate : new Date()).format('YYYY-MM-DD')} onChange={changeStartDateHandler}/>
         </div>
         <div className="flex flex-col gap-1">
             <div>дата кінця</div>
             {/* <input type="date" defaultValue={moment((value) ? value.endDate: tempDate).format('YYYY-MM-DD')} onChange={changeEndDateHandler}/> */}
-            <ReactDatePicker locale="ua" value={moment((value) ? value.endDate : new Date()).format('YYYY-MM-DD')} onChange={changeEndDateHandler}/>
+            <ReactDatePicker className="border border-gray-300 bg-gray-50 rounded-sm text-sm px-2 py-2 focus:border-blue-100" locale="ua" value={moment((value) ? value.endDate : new Date()).format('YYYY-MM-DD')} onChange={changeEndDateHandler}/>
         </div>
     </div>
 }

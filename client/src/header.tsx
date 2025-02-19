@@ -17,27 +17,30 @@ const Header: React.FC = () => {
         <NavLink to="/" className="text-xl font-semibold">
           3D Druk
         </NavLink>
-        <nav className="flex space-x-6">
+        <nav className="flex space-x-3">
           {authContext?.isAuthenticated && (
             authContext.userRole === "user" && <>
+              <NavLink to="/info">Навчальні матеріали</NavLink>
               <NavLink to="/blog-list">Наш блог</NavLink>
-              <NavLink to="/profile">Профіль</NavLink>
               <NavLink to="/technologies">Наявні технології</NavLink>
+              <NavLink to="/materials">Наявні матеріали</NavLink>
               <NavLink to="/create-service">Створити послугу</NavLink>
               <NavLink to="/services-list">Послуги</NavLink>
-              <NavLink to="/order-list">Ваші замовлення</NavLink>
-              <NavLink to="/technologies">Наявні технології</NavLink>
-              <NavLink to="/analytics">Аналітика замовлень</NavLink>
+              <NavLink to="/order-list">Замовлення</NavLink>
+              <NavLink to="/analytics">Аналітика</NavLink>
+              <NavLink to="/profile">Профіль</NavLink>
             </> || authContext.userRole === "admin" && <>
                 <NavLink to="/blog-list">Блог</NavLink>
                 <NavLink to="/create-blog">Створити статтю</NavLink>
                 <NavLink
                   to="/create-data"
                   >Додати данні</NavLink>
+                <NavLink to="/technologies">Наявні технології</NavLink>
+                <NavLink to="/materials">Наявні матеріали</NavLink>
             </>
           )}
         </nav>
-        <div>
+        <div className='flex justify-between gap-4'>
           {authContext?.isAuthenticated ? (
             <button
               onClick={handleLogout}

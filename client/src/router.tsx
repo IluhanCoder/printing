@@ -18,6 +18,8 @@ import ChatPageWrapper from "./chat/chat-page-wrapper";
 import ChatsListPage from "./chat/chats-list-page";
 import ProfilePage from "./user/profile-page";
 import AnalyticsPage from "./analytics/analytics-page";
+import MaterialsPage from "./data/materials-page";
+import InfoPage from "./info-page";
 
 export default function Router() {
     return <Routes>
@@ -26,6 +28,7 @@ export default function Router() {
         <Route path="/create-specialist" element={<CreateSpecialistPage/>}/>
         <Route path="/create-data" element={<NewDataPage/>}/>
         <Route path="/technologies" element={<TechnologiesPage/>}/>
+        <Route path="/materials" element={<MaterialsPage/>}/>
         <Route path="/create-service" element={<NewServicePage/>}/>
         <Route path="/service/:id" element={<ServiceDetailsWrapper/>} />
         <Route path="/services-list" element={<ServicesListPage/>}/>
@@ -39,5 +42,6 @@ export default function Router() {
         <Route path="/chats-list" element={<ChatsListPage/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/analytics" element={<AnalyticsPage/>}/>
+        <Route path="/info" element={<InfoPage/>}/>
     </Routes>
 }
