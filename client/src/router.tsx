@@ -23,6 +23,7 @@ import InfoPage from "./info-page";
 
 export default function Router() {
     return <Routes>
+        <Route path="/" element={<LoginPage/>}/>
         <Route path="/registration" element={<RegistrationPage/>}/>
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/create-specialist" element={<CreateSpecialistPage/>}/>
