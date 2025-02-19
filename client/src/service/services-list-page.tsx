@@ -47,25 +47,25 @@ export default function ServicesListPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl font-semibold text-gray-800 mb-6">Browse Services</h1>
+      <h1 className="text-3xl font-semibold text-gray-800 mb-6">Наявні послуги</h1>
       <div className="mb-6 flex space-x-4">
         <input
           type="text"
-          placeholder="Search by name"
+          placeholder="Пошук за назвою"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
           className="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="text"
-          placeholder="Search by technology"
+          placeholder="Пошук за технологією"
           value={searchTechnology}
           onChange={(e) => setSearchTechnology(e.target.value)}
           className="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="text"
-          placeholder="Search by material"
+          placeholder="Пошук за матеріалом"
           value={searchMaterial}
           onChange={(e) => setSearchMaterial(e.target.value)}
           className="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -105,7 +105,7 @@ export default function ServicesListPage() {
               </p>
               <Link to={`/service/${service._id}`}>
                 <button className="w-full py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
-                  View Details
+                  Детальніше
                 </button>
               </Link>
             </div>

@@ -15,6 +15,8 @@ export default function NewDataPage() {
     e.preventDefault();
     try {
       await dataService.createData(formData);
+      alert("Інформацію успішно додано");
+      setFormData({...DefaultDataCredentials});
     } catch (error) {
       setError(error.message);
     }
@@ -22,35 +24,35 @@ export default function NewDataPage() {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <h1 className="text-2xl font-semibold mb-6">Create New Data</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <h1 className="text-2xl font-semibold mb-6">Додання інформації про матеріал/технологію/обробку</h1>
+      <form key={formData.dataType} onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-1 font-medium text-gray-700">Name</label>
+          <label className="block mb-1 font-medium text-gray-700">Назва</label>
           <input
             type="text"
             name="name"
-            defaultValue={formData.name}
+            value={formData.name}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
         <div>
-          <label className="block mb-1 font-medium text-gray-700">Description</label>
+          <label className="block mb-1 font-medium text-gray-700">Опис</label>
           <input
             type="text"
             name="desc"
-            defaultValue={formData.desc}
+            value={formData.desc}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
         <div>
-          <label className="block mb-1 font-medium text-gray-700">Data Type</label>
+          <label className="block mb-1 font-medium text-gray-700">Тип</label>
           <select
             name="dataType"
-            defaultValue={formData.dataType}
+            value={formData.dataType}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >

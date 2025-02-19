@@ -16,7 +16,7 @@ const LoginPage = () => {
   useEffect(() => {
     const errorParam = searchParams.get('error');
     if (errorParam === 'unauthorized') {
-      setError('You need to log in to access this page.');
+      setError('Вам необхідно авторизуватися, щоб користуватися системою.');
     }
   }, [searchParams]);
 
@@ -30,7 +30,7 @@ const LoginPage = () => {
     try {
       const { token, role } = await authService.loginUser({ email, password });
       authContext?.login(token, role);
-      navigate('/courses');
+      navigate('/info');
     } catch (err: any) {
       setError('Помилка входу. Спробуйте ще раз.');
     } finally {

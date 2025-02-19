@@ -19,7 +19,7 @@ export default function BlogList() {
     <div className="p-6">
       {/* Page Title */}
       <div className="mb-8 text-3xl font-bold text-gray-900">
-        Blogs
+        Наш блог
       </div>
 
       {/* Blog List */}

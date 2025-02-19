@@ -41,7 +41,6 @@ export default function BlogPage() {
         {/* Image Gallery */}
         {galleryImages.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">Uploaded Images</h2>
             <ReactImageGallery items={galleryImages} />
           </div>
         )}

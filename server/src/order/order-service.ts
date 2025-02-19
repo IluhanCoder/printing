@@ -77,7 +77,6 @@ export default new class OrderService {
       })
       .populate<{ processing: IData }>("processing")
       .populate<{ from: IUser }>("from", "_id username email cell role") // Populate user details properly
-      .populate("file") // Ensure file is populated if it's a reference
       .lean();
 
       console.log(orders);

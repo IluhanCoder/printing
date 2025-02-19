@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 import OrderStatusUpdate from "./OrderStatusUpdate";
 import { AuthContext } from "../auth/auth-context";
@@ -47,6 +47,8 @@ export default function OrderDetailsPage() {
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [priceInput, setPriceInput] = useState<number>(0);
 
+  const navigate = useNavigate();
+
   // Get the current user's ID from the AuthContext
   const { userId: currentUserId } = useContext(AuthContext);
 
@@ -73,7 +75,7 @@ export default function OrderDetailsPage() {
       const dataUrl = `data:${order.file.contentType};base64,${base64Str}`;
       const link = document.createElement("a");
       link.href = dataUrl;
-      link.download = "uploaded_file";
+      link.download = `uploaded_file`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -116,7 +118,11 @@ export default function OrderDetailsPage() {
     }
   }
 
-  if (!order) return <div>Loading order details...</div>;
+  const openChat = () => {
+    navigate(`/chat/${order.from._id}/${order.service.user._id}/${order.service._id}`);
+  };
+
+  if (!order) return <div className="flex w-full p-24 justify-center">Loading order details...</div>;
 
   const getStatusColor = (status: string) => {
     switch(status) {
@@ -132,7 +138,7 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="p-6 space-y-8">
-      <h1 className="text-3xl font-semibold">Order Details</h1>
+      <h1 className="text-3xl font-semibold">Інформація про замовлення #{order._id}</h1>
 
       {/* Order Status Update */}
       <OrderStatusUpdate
@@ -150,52 +156,49 @@ export default function OrderDetailsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Order Information */}
         <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold">Order Information</h2>
-          <p><strong>Description:</strong> {order.desc}</p>
-          <p><strong>Address:</strong> {order.adress}</p>
-          <p><strong>Status:</strong> <span className={`${getStatusColor(order.status)}`}>{order.status}</span></p>
-          <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-          <p><strong>Updated At:</strong> {new Date(order.updatedAt).toLocaleString()}</p>
+          <h2 className="text-xl font-semibold">Деталі</h2>
+          <p><strong>Опис:</strong> {order.desc}</p>
+          <p><strong>Адреса отримувача:</strong> {order.adress}</p>
+          <p><strong>Створенно:</strong> {new Date(order.createdAt).toLocaleString()}</p>
+          <p><strong>Останнє оновлення:</strong> {new Date(order.updatedAt).toLocaleString()}</p>
         </div>
 
         {/* Orderer Information */}
         <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold">Orderer Information</h2>
-          <p><strong>Username:</strong> {order.from.username}</p>
+          <h2 className="text-xl font-semibold">Замовник</h2>
+          <p><strong>Імʼя:</strong> {order.from.username}</p>
           <p><strong>Email:</strong> {order.from.email}</p>
-          <p><strong>Cell:</strong> {order.from.cell}</p>
-          <p><strong>Role:</strong> {order.from.role}</p>
+          <p><strong>Номер телефону:</strong> {order.from.cell}</p>
         </div>
 
         {/* Processing Information */}
         <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold">Processing Information</h2>
-          <p><strong>Name:</strong> {order.processing.name}</p>
-          <p><strong>Description:</strong> {order.processing.desc}</p>
+          <h2 className="text-xl font-semibold">Післядрукарська обробка</h2>
+          <p><strong>Назва:</strong> {order.processing.name}</p>
+          <p><strong>Опис:</strong> {order.processing.desc}</p>
         </div>
 
         {/* Service Information */}
         <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold">Service Information</h2>
-          <p><strong>Service Name:</strong> {order.service.name}</p>
-          <p><strong>Service Description:</strong> {order.service.desc}</p>
-          <p><strong>Technology:</strong> {order.service.technology.name} - {order.service.technology.desc}</p>
-          <p><strong>Material:</strong> {order.service.material.name} - {order.service.material.desc}</p>
+          <h2 className="text-xl font-semibold">Інформація про послугу</h2>
+          <p><strong>Назва:</strong> {order.service.name}</p>
+          <p><strong>Опис:</strong> {order.service.desc}</p>
+          <p><strong>Технологія:</strong> {order.service.technology.name} - {order.service.technology.desc}</p>
+          <p><strong>Матеріал:</strong> {order.service.material.name} - {order.service.material.desc}</p>
         </div>
 
         {/* Executor Information */}
         <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold">Executor Information</h2>
-          <p><strong>Username:</strong> {order.service.user.username}</p>
+          <h2 className="text-xl font-semibold">Надавач послуги</h2>
+          <p><strong>Імʼя:</strong> {order.service.user.username}</p>
           <p><strong>Email:</strong> {order.service.user.email}</p>
-          <p><strong>Cell:</strong> {order.service.user.cell}</p>
-          <p><strong>Role:</strong> {order.service.user.role}</p>
+          <p><strong>Телефон:</strong> {order.service.user.cell}</p>
 
           {/* Conditionally render executor's card number */}
           {order.status === "accepted" && currentUserId === order.from._id && (
             <div>
-              <h3 className="mt-2 text-lg font-semibold">Executor's Card Number</h3>
-              <p><strong>Card Number:</strong> {order.service.user.cardNumber}</p>
+              <h3 className="mt-2 text-lg font-semibold">Номер карти постачальника</h3>
+              <p><strong>Номер карти:</strong> {order.service.user.cardNumber}</p>
             </div>
           )}
         </div>
@@ -209,7 +212,7 @@ export default function OrderDetailsPage() {
           onClick={handlePaymentConfirmation} 
           className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600"
         >
-          Confirm Payment Received
+          Підтвердити отримання грошей
         </button>
       )}
 
@@ -224,13 +227,15 @@ export default function OrderDetailsPage() {
             onChange={(e) => setPriceInput(Number(e.target.value))}
             className="mt-2 p-2 border rounded-md w-full"
           />
+          <div className="flex justify-center">
           <button 
             type="button" 
             onClick={handleSetPrice}
             className="mt-2 bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600"
           >
-            Set Price
+            Встановити ціну
           </button>
+          </div>
         </div>
       )}
 
@@ -242,11 +247,20 @@ export default function OrderDetailsPage() {
           onClick={downloadFile} 
           className="bg-gray-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-gray-600"
         >
-          Download Uploaded File
+          Завантажити файл для друку
         </button>
       </div>
 
       <hr className="my-4" />
+
+      <div className="flex justify-center">
+      <button
+          onClick={openChat}
+          className="py-2 px-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Відкрити чат
+        </button>
+        </div>
 
       <hr className="my-4" />
 

@@ -50,11 +50,11 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
             className="bg-yellow-500 text-white p-2 rounded mt-4"
             onClick={() => updateStatus("accepted")}
           >
-            Accept Order
+            Прийняти Замовлення
           </button>
         );
       } else {
-        message = "Waiting for the service creator to accept the order.";
+        message = "Очікуйте, коли виконувач послуг прийме замовлення.";
       }
       break;
 
@@ -63,18 +63,18 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
       if (currentUserId === ordererId) {
         message = (
           <>
-            <p>Executor's card number: <strong>{executorCard}</strong></p>
-            <p>{`Price: ${price} грн`}</p>
+            <p>Номер карти, на який необхідно перевести кошти: <strong>{executorCard}</strong></p>
+            <p>{`Вартість: ${price} грн`}</p>
             <button
               className="bg-blue-500 text-white p-2 rounded mt-4"
               onClick={() => updateStatus("money_sent")}
             >
-              Mark as Money Sent
+              Позначити, що гроші відправлені
             </button>
           </>
         );
       } else {
-        message = "Waiting for the orderer to send the money.";
+        message = "Очікується відправлення грошей замовником.";
       }
       break;
 
@@ -91,15 +91,15 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
                   updateStatus("payed");
                 }}
               >
-                Confirm Payment Received
+                Підтвердити отримання грошей
               </button>
             ) : (
-              <p>Payment has been confirmed. Awaiting next steps.</p>
+              <p>Оплату підтвердеженно. Очікуйте здійснення замовлення.</p>
             )}
           </>
         );
       } else {
-        message = "Waiting for the executor to confirm payment.";
+        message = "Очікуйте. Виконувач послуг має підтврердити вдалу оплату послуги.";
       }
       break;
 
@@ -111,11 +111,11 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
             className="bg-green-500 text-white p-2 rounded mt-4"
             onClick={() => updateStatus("sent")}
           >
-            Mark as Sent
+            Позначити, що виріб відправлено
           </button>
         );
       } else {
-        message = "Waiting for the service creator to mark the order as sent.";
+        message = "Очікується відправлення замовлення.";
       }
       break;
 
@@ -127,27 +127,27 @@ const OrderStatusUpdate: React.FC<OrderStatusUpdateProps> = ({
             className="bg-teal-500 text-white p-2 rounded mt-4"
             onClick={() => updateStatus("received")}
           >
-            Mark as Received
+            Позначити, що виріб отримано
           </button>
         );
       } else {
-        message = "Waiting for the orderer to confirm receipt.";
+        message = "Очікується підтврдження, що замовник отримав виріб.";
       }
       break;
 
     case "received":
       statusColor = "text-green-700";
-      message = "The order has been received. No further action required.";
+      message = "Замовлення отримано. Наступні дії відсутні.";
       break;
 
     default:
       statusColor = "text-gray-500";
-      message = "No further status updates available.";
+      message = "Наступні статуси недоступні.";
   }
 
   return (
     <div className="p-4 border border-gray-200 rounded-lg shadow-lg">
-      <h3 className={`text-xl font-bold ${statusColor}`}>Update Order Status</h3>
+      <h3 className={`text-xl font-bold ${statusColor}`}>Поточний статус замовлення</h3>
       <div className="mt-4">
         <p className={statusColor}>{message}</p>
         {actionButton && actionButton}

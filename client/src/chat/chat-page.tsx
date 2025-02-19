@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "../api";
+import { AuthContext } from "../auth/auth-context";
 
 interface Message {
     _id: string;
@@ -10,20 +11,22 @@ interface Message {
   }
 
 interface ChatProps {
-  currentUser: string;
+  requester: string;
   otherUser: string;
   serviceId: string;
 }
 
-export default function ChatPage({ currentUser, otherUser, serviceId }: ChatProps) {
+export default function ChatPage({ requester, otherUser, serviceId }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
+  const currentUserId = useContext(AuthContext).userId;
+
   const fetchMessages = async () => {
     try {
-      const res = await api.get(`/chat/messages/${currentUser}/${otherUser}/${serviceId}`);
+      const res = await api.get(`/chat/messages/${requester}/${otherUser}/${serviceId}`);
       setMessages(res.data);
-      console.log(currentUser);
+      console.log(requester);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -33,14 +36,14 @@ export default function ChatPage({ currentUser, otherUser, serviceId }: ChatProp
     fetchMessages();
     const interval = setInterval(fetchMessages, 3000);
     return () => clearInterval(interval);
-  }, [currentUser, otherUser, serviceId]);
+  }, [requester, otherUser, serviceId]);
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
     try {
       await api.post("/chat/send", {
-        sender: currentUser,
-        receiver: otherUser,
+        sender: currentUserId,
+        receiver: otherUser === currentUserId ? requester : otherUser,
         service: serviceId,
         content: newMessage,
       });
@@ -58,13 +61,13 @@ export default function ChatPage({ currentUser, otherUser, serviceId }: ChatProp
         {messages.map((msg) => (
             <div key={msg._id} className="mb-2">
             {/* Sender's name (aligned to left or right) */}
-            <p className={`text-sm font-semibold mb-1 ${msg.sender._id === currentUser ? "text-right" : "text-left"}`}>
+            <p className={`text-sm font-semibold mb-1 ${msg.sender._id === requester ? "text-right" : "text-left"}`}>
                 {msg.sender.username}
             </p>
             
             {/* Message bubble */}
             <div className={`p-2 rounded-lg max-w-[75%] ${
-                msg.sender._id === currentUser ? "bg-blue-500 text-white ml-auto" : "bg-gray-300 text-black"
+                msg.sender._id === requester ? "bg-blue-500 text-white ml-auto" : "bg-gray-300 text-black"
             }`}>
                 <p>{msg.content}</p>
                 <small className="block text-xs opacity-70 text-right">{new Date(msg.createdAt).toLocaleTimeString()}</small>
@@ -76,7 +79,7 @@ export default function ChatPage({ currentUser, otherUser, serviceId }: ChatProp
         <input
           type="text"
           className="flex-1 border rounded-lg p-2"
-          placeholder="Type a message..."
+          placeholder="Напишіть повідомлення..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
         />
@@ -84,7 +87,7 @@ export default function ChatPage({ currentUser, otherUser, serviceId }: ChatProp
           className="bg-blue-500 text-white px-4 py-2 rounded-lg"
           onClick={sendMessage}
         >
-          Send
+          Відправити
         </button>
       </div>
     </div>

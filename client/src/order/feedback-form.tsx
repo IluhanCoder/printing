@@ -17,6 +17,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ orderId, onSuccess }) => {
         feedbackText,
         feedbackPoints,
       });
+      alert("дякуємо за ваш відгук!");
       console.log(response.data.message);
       onSuccess();
     } catch (error) {
@@ -26,19 +27,19 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ orderId, onSuccess }) => {
 
   return (
     <div className="w-full mx-auto bg-white p-6 rounded-lg shadow-lg space-y-4">
-      <h3 className="text-2xl font-semibold text-center text-gray-700">Leave Feedback</h3>
+      <h3 className="text-2xl font-semibold text-center text-gray-700">Лишіть відгук</h3>
       
       {/* Feedback Text Area */}
       <textarea
         value={feedbackText}
         onChange={(e) => setFeedbackText(e.target.value)}
-        placeholder="Write your feedback here..."
+        placeholder="Опишіть ваш відгук тут..."
         className="w-full h-32 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
       {/* Rating Section */}
       <div className="flex items-center space-x-2">
-        <label htmlFor="rating" className="font-medium text-gray-600">Rating:</label>
+        <label htmlFor="rating" className="font-medium text-gray-600">Оцінка:</label>
         <input
           type="number"
           value={feedbackPoints}
@@ -57,7 +58,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ orderId, onSuccess }) => {
           onClick={submitFeedback}
           className="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
-          Submit Feedback
+          Лишити відгук
         </button>
       </div>
     </div>

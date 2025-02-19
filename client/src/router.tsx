@@ -38,7 +38,7 @@ export default function Router() {
         <Route path="/create-blog" element={<NewBlogPage/>}/>
         <Route path="/blog/:id" element={<BlogPage/>}/>
         <Route path="/blog-list" element={<BlogList/>}/>
-        <Route path="/chat/:currentUser/:otherUser/:serviceId" element={<ChatPageWrapper/>} />
+        <Route path="/chat/:requester/:otherUser/:serviceId" element={<ChatPageWrapper/>} />
         <Route path="/chats-list" element={<ChatsListPage/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/analytics" element={<AnalyticsPage/>}/>

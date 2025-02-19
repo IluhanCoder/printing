@@ -3,6 +3,7 @@ import { BlogCredentials, DefaultBlogCredentials } from "./blog-types";
 import handleFieldChange from "../helpers/handle-field-change";
 import blogService from "./blog-service";
 import ReactImageGallery from "react-image-gallery";
+import { useNavigate } from "react-router";
 
 // Define the type for preview images
 interface UploadedImage {
@@ -11,6 +12,8 @@ interface UploadedImage {
 }
 
 export default function NewBlogPage() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<BlogCredentials>(
     DefaultBlogCredentials
   );
@@ -23,6 +26,8 @@ export default function NewBlogPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await blogService.createBlog(formData);
+    alert("статтю успішно додано!");
+    navigate("/blog-list");
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,13 +50,13 @@ export default function NewBlogPage() {
 
   return (
     <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Create Blog</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">Створення статті</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
         {/* Blog Name Input */}
         <div>
           <label className="block mb-2 text-lg font-medium text-gray-700">
-            Name:
+            Назва:
           </label>
           <input
             type="text"
@@ -65,7 +70,7 @@ export default function NewBlogPage() {
         {/* Blog Content Textarea */}
         <div>
           <label className="block mb-2 text-lg font-medium text-gray-700">
-            Content:
+            Зміст:
           </label>
           <textarea
             name="content"
@@ -78,7 +83,7 @@ export default function NewBlogPage() {
         {/* Image Upload Input */}
         <div>
           <label className="block mb-2 text-lg font-medium text-gray-700">
-            Upload Image:
+            Завантажити Зображення:
           </label>
           <input
             type="file"
@@ -94,7 +99,7 @@ export default function NewBlogPage() {
             type="submit"
             className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
           >
-            Create Blog
+            Створити статтю
           </button>
         </div>
       </form>
@@ -102,7 +107,7 @@ export default function NewBlogPage() {
       {/* Image Gallery */}
       {galleryImages.length > 0 && (
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-4">Uploaded Images</h2>
+          <h2 className="text-2xl font-semibold mb-4">Завантажнні зобрежання</h2>
           <ReactImageGallery items={galleryImages} />
         </div>
       )}

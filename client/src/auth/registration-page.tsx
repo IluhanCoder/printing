@@ -13,7 +13,8 @@ const RegistrationPage: React.FC = () => {
     try {
       // Відправка запиту на створення користувача
       await authService.register(formData);
-      navigate('/users'); // Перенаправляємо на сторінку з користувачами
+      alert("профіль створено. Тепер вам необхідно увійти");
+      navigate('/profile'); // Перенаправляємо на сторінку з користувачами
     } catch (err) {
       setError('Помилка створення користувача. Спробуйте ще раз.');
     }

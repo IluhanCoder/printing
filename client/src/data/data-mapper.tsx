@@ -32,7 +32,7 @@ export default function DataMapper({ data, onDelete }: LocalParams) {
         <input
           type="text"
           onChange={(e) => updateFilteredData(e.target.value)}
-          placeholder="Search data..."
+          placeholder="Пошук..."
           className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
         />
       </div>
@@ -60,7 +60,7 @@ export default function DataMapper({ data, onDelete }: LocalParams) {
                   onClick={() => onDelete(entry._id)}
                   className="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
                 >
-                  Delete
+                  Видалити
                 </button>
               </div>
             )}

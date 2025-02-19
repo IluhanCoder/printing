@@ -5,6 +5,7 @@ export default new class ChatController {
     async sendMessage(req: Request, res: Response) {
         try {
             const { sender, receiver, service, content } = req.body;
+            console.log(req.body);
             const message = await chatService.sendMessage(sender, receiver, service, content);
             res.status(200).json(message);
         } catch (error) {

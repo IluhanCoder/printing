@@ -2,11 +2,11 @@ import { useParams } from "react-router-dom";
 import ChatPage from "./chat-page";
 
 export default function ChatPageWrapper() {
-  const { currentUser, otherUser, serviceId } = useParams();
+  const { requester, otherUser, serviceId } = useParams();
 
-  if (!currentUser || !otherUser || !serviceId) {
+  if (!requester || !otherUser || !serviceId) {
     return <p>Error: Missing parameters</p>;
   }
 
-  return <ChatPage currentUser={currentUser} otherUser={otherUser} serviceId={serviceId} />;
+  return <ChatPage requester={requester} otherUser={otherUser} serviceId={serviceId} />;
 }

@@ -6,6 +6,7 @@ import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 import { Data } from "../data/data-types";
 import dataService from "../data/data-service";
+import { useNavigate } from "react-router";
 
 // Define the type for preview images
 interface UploadedImage {
@@ -14,6 +15,8 @@ interface UploadedImage {
 }
 
 export default function NewServicePage () {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<ServiceCredentials>(DefaultServiceCredentials);
   const [galleryImages, setGalleryImages] = useState<UploadedImage[]>([]);
   
@@ -38,6 +41,8 @@ export default function NewServicePage () {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await serviceService.createService(formData);
+    alert("послугу успішно створено");
+    navigate("/services-list");
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,11 +67,11 @@ export default function NewServicePage () {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="max-w-2xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Create Printing Service</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Створення вашої послуги</h1>
         
         <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Service Name:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Назва послуги:</label>
             <input
               type="text"
               name="name"
@@ -77,7 +82,7 @@ export default function NewServicePage () {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Опис:</label>
             <textarea
               name="desc"
               onChange={handleChange}
@@ -88,7 +93,7 @@ export default function NewServicePage () {
 
           {technologyOptions && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Technology:</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Технологія:</label>
               <select
                 value={formData.technology}
                 onChange={(e) => setFormData({ ...formData, technology: e.target.value })}
@@ -105,7 +110,7 @@ export default function NewServicePage () {
 
           {materialOptions && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Material:</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Матеріал:</label>
               <select
                 value={formData.material}
                 onChange={(e) => setFormData({ ...formData, material: e.target.value })}
@@ -121,7 +126,7 @@ export default function NewServicePage () {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Upload Image:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Завантажити зображення:</label>
             <input
               type="file"
               accept="image/*"
@@ -134,13 +139,13 @@ export default function NewServicePage () {
             type="submit"
             className="w-full py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Create Service
+            Створити послугу
           </button>
         </form>
 
         {galleryImages.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-xl font-semibold text-gray-800">Uploaded Images</h2>
+            <h2 className="text-xl font-semibold text-gray-800">Завантаженні зображення:</h2>
             <div className="mt-4">
               <ImageGallery items={galleryImages} />
             </div>

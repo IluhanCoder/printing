@@ -32,7 +32,7 @@ export interface OrderResponse {
   service: IService;
   processing: IData;
   from: IUser;
-  status: 'pending' | 'accepted' | 'payed' | 'sent' | 'received';
+  status: 'pending' | 'accepted' | 'money_sent' | 'payed' | 'sent' | 'received';
   createdAt: Date;
   updatedAt: Date;
   budget?: number;
@@ -74,7 +74,7 @@ const orderSchema: Schema = new Schema(
     from: { type: mongoose.Types.ObjectId, ref: "User", required: true },
     status: {
       type: String,
-      enum: ['pending', 'accepted', 'payed', 'sent', 'received'],
+      enum: ['pending', 'accepted', 'money_sent', 'payed', 'sent', 'received'],
       default: 'pending'
     },
     createdAt: { type: Date, default: Date.now },
