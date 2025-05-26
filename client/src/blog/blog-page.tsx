@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Blog } from "./blog-types";
 import blogService from "./blog-service";
 import ReactImageGallery from "react-image-gallery";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { AuthContext } from "../auth/auth-context";
 
 interface UploadedImage {
   original: string;
@@ -12,8 +13,12 @@ interface UploadedImage {
 export default function BlogPage() {
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   const [blog, setBlog] = useState<Blog>();
   const [galleryImages, setGalleryImages] = useState<UploadedImage[]>([]);
+
+  const { userRole } = useContext(AuthContext);
 
   const getData = async () => {
     const result = await blogService.getById(id);
@@ -25,6 +30,11 @@ export default function BlogPage() {
     });
     setGalleryImages(gallery);
   };
+
+  const handleDelete = async () => {
+    await blogService.deleteById(blog._id);
+    navigate("/blog-list");
+  }
 
   useEffect(() => {
     getData();
@@ -49,6 +59,10 @@ export default function BlogPage() {
         <div className="mt-8">
           <p className="text-lg text-gray-700">{blog.content}</p>
         </div>
+
+        {userRole === "admin" && <div className="flex justify-center p-2">
+          <button type="button" className="bg-red-600 rounded text-white px-2 py-1" onClick={handleDelete}>видалити статтю</button>
+        </div>}
       </div>
     );
   else return <div className="text-center mt-8">Loading...</div>;

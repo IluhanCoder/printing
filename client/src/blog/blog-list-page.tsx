@@ -46,7 +46,7 @@ export default function BlogList() {
                   to={`/blog/${blog._id}`}
                   className="text-blue-600 font-semibold hover:underline"
                 >
-                  Read more →
+                  Читати →
                 </Link>
               </div>
             </div>

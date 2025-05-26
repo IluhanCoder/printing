@@ -34,7 +34,7 @@ const Header: React.FC = () => {
                 <NavLink to="/create-blog">Створити статтю</NavLink>
                 <NavLink
                   to="/create-data"
-                  >Додати данні</NavLink>
+                  >Додати дані</NavLink>
                 <NavLink to="/technologies">Наявні технології</NavLink>
                 <NavLink to="/materials">Наявні матеріали</NavLink>
             </>
